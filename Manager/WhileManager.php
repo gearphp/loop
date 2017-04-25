@@ -102,15 +102,12 @@ class WhileManager implements ManagerInterface
     protected function tick()
     {
         $time        = microtime(true);
-        $minInterval = 0;
         foreach ($this->ticks as $name => $value) {
 
             /* @var TickInterface $tick */
             $tick     = $value['tick'];
             $interval = $tick->getInterval() >= $this->interval ? $tick->getInterval() : $this->interval;
-            $diff     = $time - $value['time'];
-
-            $minInterval = $interval <= $minInterval ? $interval : $minInterval;
+            $diff     = ($time - $value['time']) * 100;
 
             if ($diff >= $interval) {
                 try {
@@ -123,7 +120,7 @@ class WhileManager implements ManagerInterface
 
         }
 
-        usleep($minInterval * 1e3);
+        usleep($this->interval * 1e3);
     }
 
     /**
