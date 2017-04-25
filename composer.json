@@ -1,0 +1,17 @@
+{
+  "name"       : "gearphp/loop",
+  "description": "GearPHP Loop",
+  "keywords"   : [
+    "gearphp",
+    "loop"
+  ],
+  "license"    : "MIT",
+  "require"    : {
+    "php": ">=7.0"
+  },
+  "autoload"   : {
+    "psr-4": {
+      "Gear\\Loop\\": ""
+    }
+  }
+}
