@@ -10,13 +10,14 @@ class CallableTick extends AbstractTick implements TickInterface
     protected $callable;
 
     /**
+     * @param string $name
      * @param callable $callable
      * @param int $time
      */
-    public function __construct(callable $callable, $time = 0)
+    public function __construct($name, callable $callable, $time = 0)
     {
         $this->callable = $callable;
-        parent::__construct($time);
+        parent::__construct($name, $time);
     }
 
     /**
