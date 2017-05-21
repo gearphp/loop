@@ -139,7 +139,7 @@ class WhileManager implements ManagerInterface
             /* @var TickInterface $tick */
             $tick     = $value['tick'];
             $interval = $tick->getInterval() >= $this->interval ? $tick->getInterval() : $this->interval;
-            $diff     = ($time - $value['time']) * 100;
+            $diff     = ($time - $value['time']) * 1000;
 
             if ($diff >= $interval) {
 
