@@ -17,7 +17,7 @@ class WhileManager implements ManagerInterface
     /**
      * Ticks interface.
      *
-     * @var [TickInterface]
+     * @var TickInterface[]
      */
     protected $ticks = [];
 
@@ -31,23 +31,33 @@ class WhileManager implements ManagerInterface
     /**
      * On start event.
      *
-     * @var [callable]
+     * @var callable[]
      */
-    protected $onStart;
+    protected $onStart = [];
 
     /**
      * On stop event.
      *
-     * @var [callable]
+     * @var callable[]
      */
-    protected $onStop;
+    protected $onStop = [];
 
     /**
      * On exception event.
      *
-     * @var [callable]
+     * @var callable[]
      */
-    protected $onException;
+    protected $onException = [];
+
+    /**
+     * @var integer|null
+     */
+    protected $startAt;
+
+    /**
+     * @var integer|null
+     */
+    protected $stopAt;
 
     /**
      * Add tick to loop.
@@ -57,6 +67,7 @@ class WhileManager implements ManagerInterface
      */
     public function addTick(TickInterface $tick)
     {
+        $tick->setManager($this);
         $this->ticks[$tick->getName()] = [
             'tick' => $tick,
             'time' => 0,
@@ -74,6 +85,7 @@ class WhileManager implements ManagerInterface
     public function removeTick($name)
     {
         if (isset($this->ticks[$name])) {
+            $this->ticks[$name]->setManager(null);
             unset($this->ticks[$name]);
         }
     }
@@ -89,10 +101,30 @@ class WhileManager implements ManagerInterface
             return;
         }
 
+        $this->startAt = time();
+        $this->stopAt  = null;
         $this->isStart = true;
+
+        if (extension_loaded('xdebug')) {
+            xdebug_disable();
+        }
+
+        foreach ($this->onStart as $callable) {
+            call_user_func_array($callable, []);
+        }
 
         while ($this->isStart) {
             $this->tick();
+        }
+
+        $this->stopAt = time();
+
+        foreach ($this->onStop as $callable) {
+            call_user_func_array($callable, []);
+        }
+
+        if (extension_loaded('xdebug')) {
+            xdebug_enable();
         }
     }
 
@@ -101,7 +133,7 @@ class WhileManager implements ManagerInterface
      */
     protected function tick()
     {
-        $time        = microtime(true);
+        $time = microtime(true);
         foreach ($this->ticks as $name => $value) {
 
             /* @var TickInterface $tick */
@@ -110,11 +142,13 @@ class WhileManager implements ManagerInterface
             $diff     = ($time - $value['time']) * 100;
 
             if ($diff >= $interval) {
+
                 try {
                     $tick->tick();
                 } catch (\Exception $e) {
                     $this->catchTickException($tick, $e);
                 }
+
                 $this->ticks[$name]['time'] = $time;
             }
 
@@ -134,14 +168,24 @@ class WhileManager implements ManagerInterface
     }
 
     /**
+     * Is loop start.
+     *
+     * @return boolean
+     */
+    public function isStart()
+    {
+        return $this->isStart;
+    }
+
+    /**
      * On start loop.
      *
      * @param callable $callable
      * @return $this
      */
-    public function onStart(callable $callable)
+    public function onStart($callable)
     {
-        $this->onStop[] = $callable;
+        $this->onStart[] = $callable;
 
         return $this;
     }
@@ -152,7 +196,7 @@ class WhileManager implements ManagerInterface
      * @param callable $callable
      * @return $this
      */
-    public function onStop(callable $callable)
+    public function onStop($callable)
     {
         $this->onStop[] = $callable;
 
@@ -167,8 +211,8 @@ class WhileManager implements ManagerInterface
      */
     protected function catchTickException(TickInterface $tick, \Exception $e)
     {
-        foreach ($this->onException as $call) {
-            call_user_func($call, new TickException($tick, $e));
+        foreach ($this->onException as $callable) {
+            call_user_func_array($callable, [new TickException($tick, $e)]);
         }
     }
 
@@ -178,10 +222,30 @@ class WhileManager implements ManagerInterface
      * @param callable $callable
      * @return $this
      */
-    public function onException(callable $callable)
+    public function onException($callable)
     {
         $this->onException[] = $callable;
 
         return $this;
+    }
+
+    /**
+     * Get start at timestamp.
+     *
+     * @return integer|null
+     */
+    public function startAt()
+    {
+        return $this->startAt;
+    }
+
+    /**
+     * Get stop at timestamp.
+     *
+     * @return integer|null
+     */
+    public function stopAt()
+    {
+        return $this->stopAt;
     }
 }
