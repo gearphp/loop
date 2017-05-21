@@ -2,6 +2,9 @@
 
 namespace Gear\Loop\Tick;
 
+/**
+ * Simple callable tick.
+ */
 class CallableTick extends AbstractTick implements TickInterface
 {
     /**
@@ -10,11 +13,13 @@ class CallableTick extends AbstractTick implements TickInterface
     protected $callable;
 
     /**
+     * CallableTick constructor.
+     *
      * @param string $name
      * @param callable $callable
      * @param int $time
      */
-    public function __construct($name, callable $callable, $time = 0)
+    public function __construct($name, $callable, $time = 0)
     {
         $this->callable = $callable;
         parent::__construct($name, $time);

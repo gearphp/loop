@@ -37,12 +37,19 @@ interface ManagerInterface
     public function stop();
 
     /**
+     * Is loop start.
+     *
+     * @return boolean
+     */
+    public function isStart();
+
+    /**
      * On start loop.
      *
      * @param callable $callable
      * @return $this
      */
-    public function onStart(callable $callable);
+    public function onStart($callable);
 
     /**
      * On stop loop.
@@ -50,7 +57,7 @@ interface ManagerInterface
      * @param callable $callable
      * @return $this
      */
-    public function onStop(callable $callable);
+    public function onStop($callable);
 
     /**
      * On exception.
@@ -58,5 +65,19 @@ interface ManagerInterface
      * @param callable $callable
      * @return $this
      */
-    public function onException(callable $callable);
+    public function onException($callable);
+
+    /**
+     * Get start at timestamp.
+     *
+     * @return integer|null
+     */
+    public function startAt();
+
+    /**
+     * Get stop at timestamp.
+     *
+     * @return integer|null
+     */
+    public function stopAt();
 }

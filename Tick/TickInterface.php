@@ -4,6 +4,9 @@ namespace Gear\Loop\Tick;
 
 use Gear\Loop\Manager\ManagerInterface;
 
+/**
+ * Tick interface.
+ */
 interface TickInterface
 {
     /**
@@ -23,10 +26,10 @@ interface TickInterface
     /**
      * Set manager.
      *
-     * @param ManagerInterface $manager
+     * @param ManagerInterface|null $manager
      * @return $this
      */
-    public function setManager(ManagerInterface $manager);
+    public function setManager(ManagerInterface $manager = null);
 
     /**
      * Get manager.
@@ -56,5 +59,5 @@ interface TickInterface
      * @param callable $callable
      * @return $this
      */
-    public function onException(callable $callable);
+    public function onException($callable);
 }

@@ -4,6 +4,9 @@ namespace Gear\Loop\Tick\Exceptions;
 
 use Gear\Loop\Tick\TickInterface;
 
+/**
+ * Tick exception.
+ */
 class TickException extends \Exception
 {
     /**
@@ -14,6 +17,8 @@ class TickException extends \Exception
     protected $tick;
 
     /**
+     * TickException constructor.
+     *
      * @param TickInterface $tick
      * @param \Throwable $exception
      */

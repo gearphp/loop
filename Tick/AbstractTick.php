@@ -4,6 +4,9 @@ namespace Gear\Loop\Tick;
 
 use Gear\Loop\Manager\ManagerInterface;
 
+/**
+ * Abstract tick.
+ */
 abstract class AbstractTick implements TickInterface
 {
     /**
@@ -27,7 +30,9 @@ abstract class AbstractTick implements TickInterface
     protected $onException;
 
     /**
-     * @param string $name
+     * AbstractTick constructor.
+     *
+     * @param $name
      * @param int $interval
      */
     public function __construct($name, $interval = 0)
@@ -52,7 +57,7 @@ abstract class AbstractTick implements TickInterface
      * @param ManagerInterface $manager
      * @return $this
      */
-    public function setManager(ManagerInterface $manager)
+    public function setManager(ManagerInterface $manager = null)
     {
         $this->manager = $manager;
 
@@ -98,10 +103,25 @@ abstract class AbstractTick implements TickInterface
      * @param callable $callable
      * @return $this
      */
-    public function onException(callable $callable)
+    public function onException($callable)
     {
         $this->onException[] = $callable;
 
         return $this;
+    }
+
+    /**
+     * Catch tick exception and throw it.
+     *
+     * @param \Exception $e
+     * @throws \Exception
+     */
+    protected function catchException(\Exception $e)
+    {
+        foreach ($this->onException as $call) {
+            call_user_func_array($call, [$e]);
+        }
+
+        throw $e;
     }
 }
