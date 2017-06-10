@@ -27,7 +27,7 @@ abstract class AbstractTick implements TickInterface
     /**
      * @var [callable]
      */
-    protected $onException;
+    protected $onException = [];
 
     /**
      * AbstractTick constructor.
