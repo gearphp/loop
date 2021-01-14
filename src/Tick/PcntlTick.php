@@ -2,22 +2,12 @@
 
 namespace Gear\Loop\Tick;
 
-/**
- * Pcntl tick.
- *
- * Stop loop on pcntl_signal.
- */
 class PcntlTick extends AbstractTick implements TickInterface
 {
-    /**
-     * PcntlTick constructor.
-     *
-     * @param int $time
-     */
-    public function __construct($time = 0)
+    public function __construct(int $time = 1)
     {
         foreach ([SIGINT, SIGTERM] as $signal) {
-            pcntl_signal($signal, [$this, 'handler']);
+            \pcntl_signal($signal, [$this, 'handler']);
         }
 
         parent::__construct('pcntl', $time);
@@ -34,15 +24,13 @@ class PcntlTick extends AbstractTick implements TickInterface
     }
 
     /**
-     * Tick.
-     *
-     * @return void
+     * {@inheritDoc}
      */
-    public function tick()
+    public function tick(): void
     {
         try {
-            if (function_exists('pcntl_signal_dispatch')) {
-                pcntl_signal_dispatch();
+            if (\function_exists('pcntl_signal_dispatch')) {
+                \pcntl_signal_dispatch();
             }
         } catch (\Exception $e) {
             $this->catchException($e);

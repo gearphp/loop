@@ -1,17 +1,27 @@
 {
-  "name"       : "gearphp/loop",
-  "description": "GearPHP Loop",
-  "keywords"   : [
-    "gearphp",
-    "loop"
-  ],
-  "license"    : "MIT",
-  "require"    : {
-    "php": ">=5.5.9"
-  },
-  "autoload"   : {
-    "psr-4": {
-      "Gear\\Loop\\": ""
+    "name": "gearphp/loop",
+    "description": "GearPHP Loop",
+    "keywords": [
+        "gearphp",
+        "loop"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^7.4"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.13"
+    },
+    "autoload": {
+        "psr-4": {
+            "Gear\\Loop\\": "src"
+        }
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true,
+        "bin-dir": "bin"
     }
-  }
 }
