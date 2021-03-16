@@ -113,7 +113,7 @@ abstract class AbstractManager implements ManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function onBefore(callable $callable): self
+    public function onBeforeTick(callable $callable): self
     {
         $this->onBeforeTick[] = $callable;
 
@@ -123,7 +123,7 @@ abstract class AbstractManager implements ManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function onAfter(callable $callable): self
+    public function onAfterTick(callable $callable): self
     {
         $this->onAfterTick[] = $callable;
 

@@ -44,12 +44,12 @@ interface ManagerInterface
     /**
      * Before tick run.
      */
-    public function onBefore(callable $callable): self;
+    public function onBeforeTick(callable $callable): self;
 
     /**
      * After tick run.
      */
-    public function onAfter(callable $callable): self;
+    public function onAfterTick(callable $callable): self;
 
     /**
      * On exception.
