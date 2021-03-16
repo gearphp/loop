@@ -28,6 +28,16 @@ abstract class AbstractManager implements ManagerInterface
     protected array $onStop = [];
 
     /**
+     * On before tick event.
+     */
+    protected array $onBeforeTick = [];
+
+    /**
+     * On after tick event.
+     */
+    protected array $onAfterTick = [];
+
+    /**
      * On exception event.
      */
     protected array $onException = [];
@@ -52,7 +62,15 @@ abstract class AbstractManager implements ManagerInterface
         }
 
         while ($this->isStart) {
+            foreach ($this->onBeforeTick as $callable) {
+                \call_user_func_array($callable, []);
+            }
+
             $time = $this->tick();
+
+            foreach ($this->onAfterTick as $callable) {
+                \call_user_func_array($callable, []);
+            }
 
             if ($time < $this->interval) {
                 \usleep($this->interval - $time);
@@ -88,6 +106,26 @@ abstract class AbstractManager implements ManagerInterface
     public function onStart(callable $callable): self
     {
         $this->onStart[] = $callable;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function onBefore(callable $callable): self
+    {
+        $this->onBeforeTick[] = $callable;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function onAfter(callable $callable): self
+    {
+        $this->onAfterTick[] = $callable;
 
         return $this;
     }
