@@ -6,7 +6,7 @@ use Gear\Loop\Manager\EventManager;
 use Gear\Loop\Manager\ManagerInterface;
 use Gear\Loop\Manager\WhileManager;
 
-class Factory
+class LoopFactory
 {
     public static function create(): ManagerInterface
     {

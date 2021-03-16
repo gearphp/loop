@@ -2,7 +2,7 @@
 
 require(__DIR__ . '/../vendor/autoload.php');
 
-$loop = \Gear\Loop\Factory::create();
+$loop = \Gear\Loop\LoopFactory::create();
 
 $loop->addTick(new \Gear\Loop\Tick\PcntlTick());
 $loop->addTick(new \Gear\Loop\Tick\CallableTick('test', function () {
