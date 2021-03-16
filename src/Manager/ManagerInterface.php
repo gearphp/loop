@@ -42,6 +42,16 @@ interface ManagerInterface
     public function onStop(callable $callable): self;
 
     /**
+     * Before tick run.
+     */
+    public function onBefore(callable $callable): self;
+
+    /**
+     * After tick run.
+     */
+    public function onAfter(callable $callable): self;
+
+    /**
      * On exception.
      */
     public function onException(callable $callable): self;
