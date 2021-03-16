@@ -44,6 +44,7 @@ class WhileManager extends AbstractManager
     protected function tick(): int
     {
         $time = \microtime(true);
+
         foreach ($this->ticks as $name => $value) {
             /** @var TickInterface $tick */
             $tick = $value['tick'];
