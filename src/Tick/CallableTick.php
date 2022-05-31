@@ -19,7 +19,7 @@ class CallableTick extends AbstractTick implements TickInterface
     {
         try {
             \call_user_func_array($this->callable, [$this]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->catchException($e);
         }
     }

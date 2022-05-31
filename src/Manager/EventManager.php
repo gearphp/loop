@@ -28,7 +28,7 @@ class EventManager extends AbstractManager
         $event = new \Event($this->eventBase, -1, \Event::TIMEOUT | \Event::PERSIST, function () use ($tick) {
             try {
                 $tick->tick();
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $this->catchTickException($tick, $e);
             }
         });

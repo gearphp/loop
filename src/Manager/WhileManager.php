@@ -53,7 +53,7 @@ class WhileManager extends AbstractManager
             if ($diff >= $tick->getInterval()) {
                 try {
                     $tick->tick();
-                } catch (\Exception $e) {
+                } catch (\Throwable $e) {
                     $this->catchTickException($tick, $e);
                 }
 

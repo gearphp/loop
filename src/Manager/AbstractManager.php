@@ -161,7 +161,7 @@ abstract class AbstractManager implements ManagerInterface
     /**
      * Catch exception.
      */
-    protected function catchTickException(TickInterface $tick, \Exception $e): void
+    protected function catchTickException(TickInterface $tick, \Throwable $e): void
     {
         foreach ($this->onException as $callable) {
             \call_user_func_array($callable, [new TickException($tick, $e)]);

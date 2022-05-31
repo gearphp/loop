@@ -32,7 +32,7 @@ class PcntlTick extends AbstractTick implements TickInterface
             if (\function_exists('pcntl_signal_dispatch')) {
                 \pcntl_signal_dispatch();
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->catchException($e);
         }
     }

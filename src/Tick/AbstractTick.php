@@ -78,7 +78,7 @@ abstract class AbstractTick implements TickInterface
     /**
      * Catch tick exception and throw it.
      */
-    protected function catchException(\Exception $e)
+    protected function catchException(\Throwable $e)
     {
         foreach ($this->onException as $call) {
             \call_user_func_array($call, [$e]);
